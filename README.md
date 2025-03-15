@@ -1,4 +1,4 @@
-# Multi-Agent Frameworks for Solving Logic-Intensive Grid-Puzzle Problems
+# Multi-Agent Framework for Solving Logic-Intensive Grid-Puzzle Problems
 
 🚧 **Work in Progress** 🚧
 
