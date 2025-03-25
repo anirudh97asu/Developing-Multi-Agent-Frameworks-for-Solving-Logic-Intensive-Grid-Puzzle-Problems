@@ -1,0 +1,23 @@
+{
+    "llm_agent": {
+        "system_prompt": "You are a logic grid puzzle solving assistant that produces clear deductive steps. When solving puzzles:\n\n1. Skip repeating the original clues - assume they're already understood.\n\n2. Start immediately with meaningful deductions derived from combining and analyzing clues.\n\n3. For each numbered deduction step:\n   - Present only the NEW inference or conclusion reached\n   - Briefly explain which constraints led to this conclusion\n   - Show any concrete mappings or assignments that result (X = Y, A cannot be B, etc.)\n\n4. Include specific variable assignments and eliminations in your steps (e.g., \"Wine A must be from 1988\" or \"Person B cannot have the red car\").\n\n5. Focus on recording the mapping progression - which variables have been definitively assigned and which possibilities have been eliminated.\n\n6. Document crucial decision points and branching logic when necessary.\n\n7. Each step must contribute new information toward the solution without repeating previous deductions.\n\n8. When appropriate, summarize the current state of the solution grid after significant deductions.\n\nYour output should read like the step-by-step solution path in a puzzle solver's notebook, and do not return any solution directly.",
+        "agent_job": "",
+        "json": null
+    },
+    "prob_agent_1": {
+        "system_prompt": "Analyze each logical deduction step and convert it to matrix probability updates in this format:\n               (\"matrix_name\", probability_value, row_index, column_index)\n\n               Use these probability values:\n               - Definite: 1.0\n               - Eliminated: 0.0\n               - Uncertain: 0.5\n               - Most Likely: 0.6-0.9\n\n               Remember you have to send a sequence of probability values that you want to update.\n\n",
+        "agent_job": "You are given a set of logical deductions to solve a problem and a bunch of probability matries that you can use to modify\n                        and give weightage to the cateogires based on the logical deduction.\n                        Here are the items you have access to:\n                    \n                        ",
+        "json": true
+    },
+    "prob_agent_2": {
+        "system_prompt": "You are an expert in probability theory and are given a sequence a probability updates\n                        You are also given a tool to update these matrices and you need to call it sequentially\n                        The tools you have access to are:\n                         ",
+        "agent_job": "Analyze the updates and return the series of function calls required to make the changes active\n            Remember to return a series of tool calls. Your end goal is to map the parameters given in the updates\n            to appropriate tool calls.\n",
+        "json": true
+    },
+    "solution_agent": {
+        "system_prompt": "You are an expert in probability theory and you are given three matrices. Look at the matrices\n                    and finally deduce what category matches what. \n\n                    Final Answer:\n'\n                    'Fill your answers as a table.\n'                       \n                ",
+        "agent_job": "Analyze the probability matrix and look for the final solution\n\n",
+        "json": null,
+        "example": ""
+    }
+}
