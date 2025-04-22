@@ -22,12 +22,20 @@ client = genai.Client(api_key=os.getenv("API_KEY"))
 def get_json_schema(agent_name):
 
 
+    if agent_name == "llm_agent":
+        
+        class Recipe(BaseModel):
+            ingredients: List[str]
+
+        return Recipe 
+
+
+
     if agent_name == "prob_agent_1":
 
         class CustomFieldModel(BaseModel):
-            Topic_Pair: str
-            Pair_Index: int = Field(ge=0, le=15, description="Integer between 0 and 16")
-            Probability: float = Field(ge=0.0, le=1.0, description="Float between 0 and 1")
+            Item_Item_Pair: str
+            Probability: float = Field(ge=0.05, le=0.95, description="Float between 0 and 1")
 
 
         class Recipe(BaseModel):
@@ -41,10 +49,10 @@ def get_json_schema(agent_name):
 
         class Recipe(BaseModel):
             tool_name: str
-            matrix_name: str
-            i: int
-            j: int
-            value: float
+            Topic_Pair: str
+            Row_Index: int
+            Col_Index: int
+            Probability: float
 
         return Recipe
     
@@ -54,13 +62,13 @@ def get_json_schema(agent_name):
 
 class Agent:
 
-    def __init__(self,agent_name, system_prompt=None, json=None):
+    def __init__(self,agent_name, system_prompt=None, json_schema=None):
         self.model_name = "gemini-2.0-flash-exp"
         self.agent_name = agent_name
         self.system_prompt = system_prompt
         self.client = client
 
-        if not json:
+        if not json_schema:
 
             self.chat = self.client.chats.create(  model=self.model_name,
                                               
@@ -69,15 +77,16 @@ class Agent:
                                             )
             
         else:
-            recipe = get_json_schema(agent_name)
-
-            if recipe is not None:
-                self.chat = self.client.chats.create(model=self.model_name,
-                                                    config=types.GenerateContentConfig(system_instruction=self.system_prompt,
-                                                                                        temperature=0.0,
-                                                                                        response_mime_type='application/json',
-                                                                                        response_schema=list[recipe]))
-                
+            if json_schema is not None:
+                print("I think there is some json schema", json_schema)
+            self.chat = self.client.chats.create(model=self.model_name,
+                                                config=types.GenerateContentConfig(system_instruction=self.system_prompt,
+                                                                                    temperature=0.0,
+                                                                                    top_k=18,
+                                                                                    top_p = 0.4,
+                                                                                    response_mime_type='application/json',
+                                                                                    response_schema=json_schema))
+            
 
     def perform_action(self, user_query):
         response = self.chat.send_message(user_query)
