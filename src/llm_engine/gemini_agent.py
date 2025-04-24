@@ -62,7 +62,7 @@ def get_json_schema(agent_name):
 
 class Agent:
 
-    def __init__(self,agent_name, system_prompt=None, json_schema=None):
+    def __init__(self,agent_name, system_prompt=None, json_schema=None, max_output_tokens=8192):
         self.model_name = "gemini-2.0-flash-exp"
         self.agent_name = agent_name
         self.system_prompt = system_prompt
@@ -77,15 +77,17 @@ class Agent:
                                             )
             
         else:
-            if json_schema is not None:
-                print("I think there is some json schema", json_schema)
+            # if json_schema is not None:
+            #     print("I think there is some json schema", json_schema)
+            
             self.chat = self.client.chats.create(model=self.model_name,
-                                                config=types.GenerateContentConfig(system_instruction=self.system_prompt,
-                                                                                    temperature=0.0,
-                                                                                    top_k=18,
-                                                                                    top_p = 0.4,
-                                                                                    response_mime_type='application/json',
-                                                                                    response_schema=json_schema))
+                                                    config=types.GenerateContentConfig(system_instruction=self.system_prompt,
+                                                                                        temperature=0.0,
+                                                                                        top_k=18,
+                                                                                        top_p = 0.4,
+                                                                                        maxOutputTokens=max_output_tokens,
+                                                                                        response_mime_type='application/json',
+                                                                                        response_schema=json_schema))
             
 
     def perform_action(self, user_query):
