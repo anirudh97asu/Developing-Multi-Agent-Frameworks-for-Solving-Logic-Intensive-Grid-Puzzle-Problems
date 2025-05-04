@@ -81,11 +81,7 @@ jupyter notebook notebooks/
 
 ## Results and Performance
 
-The framework has been tested on various puzzle types including:
-- Sudoku (standard and variants)
-- Nonograms (Picross)
-- Logic grid puzzles
-- Crosswords
+The framework has been tested on Logic grid puzzles
 
 Detailed performance metrics and comparisons are available in the experiment notebooks.
 
