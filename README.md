@@ -84,9 +84,3 @@ jupyter notebook notebooks/
 The framework has been tested on Logic grid puzzles
 
 Detailed performance metrics and comparisons are available in the experiment notebooks.
-
-## License
-[License information will be added]
-
-## Contact
-[Contact information will be added]
