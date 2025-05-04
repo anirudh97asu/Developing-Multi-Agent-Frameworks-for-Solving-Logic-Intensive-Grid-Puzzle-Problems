@@ -52,7 +52,6 @@ def accumulate_tools():
     total_tools  = []
     functions = inspect.getmembers(script, inspect.isfunction)
 
-    print(functions)
     # Extract function names
     function_names = [(name,fn) for name, fn in functions if fn.__module__  == str(script.__name__)]
     total_tools.extend(function_names)
@@ -84,7 +83,40 @@ def initialize_probability_tables(num_categories, categories, cat_topics):
         c1 , c2 = categories[combination[0]].split(", "), categories[combination[1]].split(", ")
        
         matrix =  np.full((len(c1), len(c2)), 1 / max(len(c1), len(c2)))
-        topic = cat_topics[combination[0]] + "x" + cat_topics[combination[1]]
+        topic = cat_topics[combination[0]] + "__x__" + cat_topics[combination[1]]
         matrices[topic] = matrix
        
     return matrices
+
+
+def populate_categories(categories):
+    
+    cat_topics = []
+    categories_list = []
+
+
+    cat_str = categories.split("\n")
+    for item in cat_str:
+        cat_topics.append(item.split(" : ")[0])
+        categories_list.append(item.split(" : ")[1].split(", "))
+
+    examples = {}
+    r = 2
+    combinations_ls = list(combinations(np.arange(len(cat_topics)), r))
+
+    for topic_cob in combinations_ls:
+        values = []
+        key_1, key_2 = topic_cob
+        for i in range(len(categories_list[0])):
+            for j in range(len(categories_list[0])):
+
+                values.append((categories_list[key_1][i], categories_list[key_2][j]))
+
+        examples[cat_topics[topic_cob[0]] + "__x__" + cat_topics[topic_cob[1]]] = values
+
+    return examples
+
+
+# def get_pair_index_mapping(pair_ind):
+    
+#     mapping = {0: (0, 0), 1: (0, 1), 2: (0, 2), }
